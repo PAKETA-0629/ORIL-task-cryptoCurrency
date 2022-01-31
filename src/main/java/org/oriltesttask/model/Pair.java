@@ -20,9 +20,9 @@ public class Pair {
 
     @Id
     private Long id;
-    @Column(name = "symbol1")
+    @Column(name = "cryptoCurrency")
     private String cryptoCurrency;
-    @Column(name = "symbol2")
+    @Column(name = "currency")
     private String currency;
     @Column(name = "price")
     private Double price;
