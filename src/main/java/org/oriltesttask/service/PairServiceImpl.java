@@ -1,10 +1,9 @@
 package org.oriltesttask.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.oriltesttask.model.Pair;
 import org.oriltesttask.repository.PairRepository;
+import org.oriltesttask.util.CSVGenerator;
 import org.oriltesttask.util.CryptoCurrency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,9 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,25 +82,15 @@ public class PairServiceImpl implements PairService {
 
     @Override
     public ByteArrayInputStream generateCSV() {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();;
-        CSVPrinter csvPrinter;
-        try {
-            csvPrinter = new CSVPrinter(new PrintWriter(out), CSVFormat.DEFAULT);
-            for (CryptoCurrency cryptoCurrency : cryptoCurrencies) {
-                List<String> data = Arrays.asList(
-                        cryptoCurrency.toString(),
-                        String.valueOf(findMinPrice(cryptoCurrency.toString()).getPrice()),
-                        String.valueOf(findMaxPrice(cryptoCurrency.toString()).getPrice())
-                );
-
-                csvPrinter.printRecord(data);
-            }
-
-            csvPrinter.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<List<String>> data = new ArrayList<>();
+        for (CryptoCurrency cryptoCurrency : cryptoCurrencies) {
+            List<String> row = Arrays.asList(
+                    cryptoCurrency.toString(),
+                    String.valueOf(findMinPrice(cryptoCurrency.toString()).getPrice()),
+                    String.valueOf(findMaxPrice(cryptoCurrency.toString()).getPrice())
+            );
+            data.add(row);
         }
-        return new ByteArrayInputStream(out.toByteArray());
-
+        return CSVGenerator.generate(data);
     }
 }
