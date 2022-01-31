@@ -3,6 +3,7 @@ package org.oriltesttask;
 import lombok.extern.slf4j.Slf4j;
 import org.oriltesttask.model.PairProfile;
 import org.oriltesttask.service.PairServiceImpl;
+import org.oriltesttask.util.CryptoCurrency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +23,7 @@ public class OrilTestTaskApplication {
 
     private static PairServiceImpl pairService;
     private static final RestTemplate restTemplate = get();
-    private static final String[] currencies = {"BTC", "ETH", "XRP"};
+    private static final CryptoCurrency[] CRYPTO_CURRENCIES = CryptoCurrency.values();
 
     @Autowired
     public OrilTestTaskApplication(PairServiceImpl pairService1) {
@@ -35,15 +36,15 @@ public class OrilTestTaskApplication {
 
     @Scheduled(fixedDelay = 60000)
     private static void fetchCryptocurrencyRate() {
-        for (String currency : currencies) {
-            PairProfile pair = restTemplate.getForObject("https://cex.io/api/last_price/" + currency + "/USD/", PairProfile.class);
+        for (CryptoCurrency cryptoCurrency : CRYPTO_CURRENCIES) {
+            PairProfile pair = restTemplate.getForObject("https://cex.io/api/last_price/" + cryptoCurrency + "/USD/", PairProfile.class);
             if (pair == null) {
                 log.error("Pair is null");
                 //throw new Exception();
             }
 
             pair.setDate(OffsetDateTime.now());
-            log.info("Fetch Cryptocurrency Last Price: " + pair.getSymbol1() + "|" + pair.getSymbol2() + "|" + pair.getPrice());
+            log.info("Fetch Cryptocurrency Last Price: " + pair.getCryptoCurrency() + "|" + pair.getCurrency() + "|" + pair.getPrice());
             pairService.createPair(pair.toEntity());
         }
     }

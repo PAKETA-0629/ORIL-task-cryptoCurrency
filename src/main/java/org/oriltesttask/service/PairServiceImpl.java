@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.oriltesttask.model.Pair;
 import org.oriltesttask.repository.PairRepository;
+import org.oriltesttask.util.CryptoCurrency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ import java.util.List;
 public class PairServiceImpl implements PairService {
 
     private final PairRepository pairRepository;
-    private final String[] currencies = {"BTC", "ETH", "XRP"};
+    private final CryptoCurrency[] cryptoCurrencies = CryptoCurrency.values();
 
     @Autowired
     public PairServiceImpl(PairRepository pairRepository) {
@@ -52,12 +53,12 @@ public class PairServiceImpl implements PairService {
 
     @Override
     public void createPair(Pair pair) {
-        pairRepository.createPair(pair.getSymbol1(), pair.getSymbol2(), pair.getPrice(), pair.getDate());
+        pairRepository.createPair(pair.getCryptoCurrency(), pair.getCurrency(), pair.getPrice(), pair.getDate());
     }
 
     @Override
-    public Pair findMaxPrice(String currencyName) {
-        Pair pair = pairRepository.findMaxPrice(currencyName).orElse(null);
+    public Pair findMaxPrice(String cryptoCurrency) {
+        Pair pair = pairRepository.findMaxPrice(cryptoCurrency).orElse(null);
         if (pair == null) {
             log.error("Pair is empty");
             //throw new Exception();
@@ -66,8 +67,8 @@ public class PairServiceImpl implements PairService {
     }
 
     @Override
-    public Pair findMinPrice(String currencyName) {
-        Pair pair = pairRepository.findMinPrice(currencyName).orElse(null);
+    public Pair findMinPrice(String cryptoCurrency) {
+        Pair pair = pairRepository.findMinPrice(cryptoCurrency).orElse(null);
         if (pair == null) {
             log.error("Pair is empty");
             //throw new Exception();
@@ -88,11 +89,11 @@ public class PairServiceImpl implements PairService {
         CSVPrinter csvPrinter;
         try {
             csvPrinter = new CSVPrinter(new PrintWriter(out), CSVFormat.DEFAULT);
-            for (String currency : currencies) {
+            for (CryptoCurrency cryptoCurrency : cryptoCurrencies) {
                 List<String> data = Arrays.asList(
-                        currency,
-                        String.valueOf(findMinPrice(currency).getPrice()),
-                        String.valueOf(findMaxPrice(currency).getPrice())
+                        cryptoCurrency.toString(),
+                        String.valueOf(findMinPrice(cryptoCurrency.toString()).getPrice()),
+                        String.valueOf(findMaxPrice(cryptoCurrency.toString()).getPrice())
                 );
 
                 csvPrinter.printRecord(data);
