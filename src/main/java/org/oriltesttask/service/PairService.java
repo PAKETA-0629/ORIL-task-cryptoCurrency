@@ -1,6 +1,7 @@
 package org.oriltesttask.service;
 
 import org.oriltesttask.model.Pair;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface PairService {
     Pair findMaxPrice(String currencyName);
 
     Pair findMinPrice(String currencyName);
+
+    Page<Pair> getPage(String currencyName, int page, int size);
 }

@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.oriltesttask.model.Pair;
 import org.oriltesttask.repository.PairRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,6 +64,12 @@ public class PairServiceImpl implements PairService {
             log.error("Pair is empty");
             //throw new Exception();
         }
+        return pair;
+    }
+
+    @Override
+    public Page<Pair> getPage(String currencyName, int page, int size) {
+        Page<Pair> pair = pairRepository.getPage(currencyName, PageRequest.of(page, size, Sort.by("price").ascending()));
         return pair;
     }
 }
