@@ -17,5 +17,5 @@ public interface PairService {
 
     Pair findMinPrice(String currencyName);
 
-    Page<Pair> getPage(String currencyName, int page, int size);
+    Page<Pair> getPage(String currencyName, Integer page, Integer size);
 }

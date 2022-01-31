@@ -29,8 +29,9 @@ public class PairController {
     }
 
     @GetMapping("/cryptocurrencies")
-    public Page<Pair> getPage(@RequestParam(name = "name") String currencyName, @RequestParam(required = false) int page, @RequestParam(required = false) int size) {
-        size = size == 0 ? 10 : size;
+    public Page<Pair> getPage(@RequestParam(name = "name") String currencyName, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        page = page == null ? 0 : page;
+        size = size == null ? 10 : size;
         return pairService.getPage(currencyName, page, size);
     }
 }

@@ -68,7 +68,7 @@ public class PairServiceImpl implements PairService {
     }
 
     @Override
-    public Page<Pair> getPage(String currencyName, int page, int size) {
+    public Page<Pair> getPage(String currencyName, Integer page, Integer size) {
         Page<Pair> pair = pairRepository.getPage(currencyName, PageRequest.of(page, size, Sort.by("price").ascending()));
         return pair;
     }
