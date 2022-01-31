@@ -44,7 +44,7 @@ public class PairServiceImpl implements PairService {
 
     @Override
     public void createPair(Pair pair) {
-        pairRepository.createPair(pair.getSymbol1(), pair.getSymbol2(), pair.getPrice());
+        pairRepository.createPair(pair.getSymbol1(), pair.getSymbol2(), pair.getPrice(), pair.getDate());
     }
 
     @Override
