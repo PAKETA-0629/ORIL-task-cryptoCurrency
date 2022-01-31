@@ -18,12 +18,12 @@ public class PairProfile {
     @JsonProperty("lprice")
     private Double price;
     @JsonProperty("curr1")
-    private String symbol1;
+    private String cryptoCurrency;
     @JsonProperty("curr2")
-    private String symbol2;
+    private String currency;
     private OffsetDateTime date;
 
     public Pair toEntity() {
-        return Pair.builder().price(price).symbol1(symbol1).symbol2(symbol2).date(date).build();
+        return Pair.builder().price(price).cryptoCurrency(cryptoCurrency).currency(currency).date(date).build();
     }
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,15 +21,15 @@ public class Pair {
     @Id
     private Long id;
     @Column(name = "symbol1")
-    private String symbol1;
+    private String cryptoCurrency;
     @Column(name = "symbol2")
-    private String symbol2;
+    private String currency;
     @Column(name = "price")
     private Double price;
     @Column(name = "date")
     private OffsetDateTime date;
 
     public PairProfile toProfile() {
-        return PairProfile.builder().price(price).symbol1(symbol1).symbol2(symbol2).date(date).build();
+        return PairProfile.builder().price(price).cryptoCurrency(cryptoCurrency).currency(currency).date(date).build();
     }
 }

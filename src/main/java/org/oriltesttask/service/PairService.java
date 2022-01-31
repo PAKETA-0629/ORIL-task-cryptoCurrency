@@ -14,11 +14,11 @@ public interface PairService {
 
     void createPair(Pair pair);
 
-    Pair findMaxPrice(String currencyName);
+    Pair findMaxPrice(String cryptoCurrency);
 
-    Pair findMinPrice(String currencyName);
+    Pair findMinPrice(String cryptoCurrency);
 
-    Page<Pair> getPage(String currencyName, Integer page, Integer size);
+    Page<Pair> getPage(String cryptoCurrency, Integer page, Integer size);
 
     ByteArrayInputStream generateCSV();
 }
