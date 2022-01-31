@@ -22,10 +22,10 @@ public interface PairRepository extends JpaRepository<Pair, Long> {
     @Override
     List<Pair> findAll();
 
-    @Query(nativeQuery = true, value = "SELECT * FROM pairs_prices WHERE price = (SELECT MIN(price) FROM pairs_prices WHERE symbol1=:currency_name);")
+    @Query(nativeQuery = true, value = "SELECT * FROM pairs_prices WHERE price = (SELECT MIN(price) FROM pairs_prices WHERE symbol1=:currency_name) LIMIT 1;")
     Optional<Pair> findMinPrice(@Param(value = "currency_name") String cryptoCurrency);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM pairs_prices WHERE price = (SELECT MAX(price) FROM pairs_prices WHERE symbol1=:currency_name);")
+    @Query(nativeQuery = true, value = "SELECT * FROM pairs_prices WHERE price = (SELECT MAX(price) FROM pairs_prices WHERE symbol1=:currency_name) LIMIT 1;")
     Optional<Pair> findMaxPrice(@Param(value = "currency_name") String cryptoCurrency);
 
     @Transactional
