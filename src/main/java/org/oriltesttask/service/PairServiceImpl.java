@@ -1,6 +1,8 @@
 package org.oriltesttask.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.oriltesttask.model.Pair;
 import org.oriltesttask.repository.PairRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -16,6 +23,7 @@ import java.util.List;
 public class PairServiceImpl implements PairService {
 
     private final PairRepository pairRepository;
+    private final String[] currencies = {"BTC", "ETH", "XRP"};
 
     @Autowired
     public PairServiceImpl(PairRepository pairRepository) {
@@ -72,5 +80,29 @@ public class PairServiceImpl implements PairService {
         page = page == null ? 0 : page;
         size = size == null ? 10 : size;
         return pairRepository.getPage(currencyName, PageRequest.of(page, size, Sort.by("price").ascending()));
+    }
+
+    @Override
+    public ByteArrayInputStream generateCSV() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();;
+        CSVPrinter csvPrinter;
+        try {
+            csvPrinter = new CSVPrinter(new PrintWriter(out), CSVFormat.DEFAULT);
+            for (String currency : currencies) {
+                List<String> data = Arrays.asList(
+                        currency,
+                        String.valueOf(findMinPrice(currency).getPrice()),
+                        String.valueOf(findMaxPrice(currency).getPrice())
+                );
+
+                csvPrinter.printRecord(data);
+            }
+
+            csvPrinter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ByteArrayInputStream(out.toByteArray());
+
     }
 }

@@ -3,6 +3,7 @@ package org.oriltesttask.service;
 import org.oriltesttask.model.Pair;
 import org.springframework.data.domain.Page;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public interface PairService {
@@ -18,4 +19,6 @@ public interface PairService {
     Pair findMinPrice(String currencyName);
 
     Page<Pair> getPage(String currencyName, Integer page, Integer size);
+
+    ByteArrayInputStream generateCSV();
 }
