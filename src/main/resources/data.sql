@@ -1,4 +1,4 @@
-CREATE TABLE pairs_prices (
+CREATE TABLE IF NOT EXISTS pairs_prices (
 
     id SERIAL PRIMARY KEY,
     price DOUBLE PRECISION NOT NULL,
