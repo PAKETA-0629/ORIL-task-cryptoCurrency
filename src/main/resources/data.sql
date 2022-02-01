@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS pairs_prices (
 
     id SERIAL PRIMARY KEY,
     price DOUBLE PRECISION NOT NULL,
-    cryptoCurrency VARCHAR(15) NOT NULL,
+    crypto_currency VARCHAR(15) NOT NULL,
     currency VARCHAR(15) NOT NULL,
     date TIMESTAMP WITH TIME ZONE NOT NULL
 );
