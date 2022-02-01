@@ -35,5 +35,5 @@ public interface PairRepository extends JpaRepository<Pair, Long> {
     void createPair(@Param(value = "symbol1") String cryptoCurrency, @Param(value = "symbol2") String currency, @Param(value = "price") Double price, @Param(value = "date") OffsetDateTime date);
 
     @Query(nativeQuery = true, value = "SELECT * FROM pairs_prices WHERE crypto_currency = :currency_name")
-    Page<PairProfile> getPage(@Param(value = "currency_name") String cryptoCurrency, Pageable pageable);
+    Page<Pair> getPage(@Param(value = "currency_name") String cryptoCurrency, Pageable pageable);
 }

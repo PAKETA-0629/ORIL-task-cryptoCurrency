@@ -2,6 +2,7 @@ package org.oriltesttask.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.oriltesttask.model.Pair;
+import org.oriltesttask.model.PairProfile;
 import org.oriltesttask.repository.PairRepository;
 import org.oriltesttask.util.CSVGenerator;
 import org.oriltesttask.util.CryptoCurrency;
@@ -15,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -29,8 +31,8 @@ public class PairServiceImpl implements PairService {
     }
 
     @Override
-    public List<Pair> findAll() {
-        List<Pair> pairs = pairRepository.findAll();
+    public List<PairProfile> findAll() {
+        List<PairProfile> pairs = pairRepository.findAll().stream().map(Pair::toProfile).collect(Collectors.toList());
         if (pairs.isEmpty()) {
             log.error("Empty list of pairs");
             //throw new Exception();
@@ -54,23 +56,23 @@ public class PairServiceImpl implements PairService {
     }
 
     @Override
-    public Pair findMaxPrice(String cryptoCurrency) {
+    public PairProfile findMaxPrice(String cryptoCurrency) {
         Pair pair = pairRepository.findMaxPrice(cryptoCurrency).orElse(null);
         if (pair == null) {
             log.error("Pair is empty");
             //throw new Exception();
         }
-        return pair;
+        return pair.toProfile();
     }
 
     @Override
-    public Pair findMinPrice(String cryptoCurrency) {
+    public PairProfile findMinPrice(String cryptoCurrency) {
         Pair pair = pairRepository.findMinPrice(cryptoCurrency).orElse(null);
         if (pair == null) {
             log.error("Pair is empty");
             //throw new Exception();
         }
-        return pair;
+        return pair.toProfile();
     }
 
     @Override

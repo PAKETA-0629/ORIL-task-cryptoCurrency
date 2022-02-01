@@ -1,6 +1,7 @@
 package org.oriltesttask.controller;
 
 import org.oriltesttask.model.Pair;
+import org.oriltesttask.model.PairProfile;
 import org.oriltesttask.service.PairServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -24,12 +25,12 @@ public class PairController {
     }
 
     @GetMapping("/cryptocurrencies/minprice")
-    public Pair getMinPrice(@RequestParam(name = "name") String currencyName) {
+    public PairProfile getMinPrice(@RequestParam(name = "name") String currencyName) {
         return pairService.findMinPrice(currencyName);
     }
 
     @GetMapping("/cryptocurrencies/maxprice")
-    public Pair getMaxPrice(@RequestParam(name = "name") String currencyName) {
+    public PairProfile getMaxPrice(@RequestParam(name = "name") String currencyName) {
         return pairService.findMaxPrice(currencyName);
     }
 
